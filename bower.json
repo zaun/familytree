@@ -1,0 +1,16 @@
+{
+  "name": "WebTree",
+  "dependencies": {
+    "angular": "1.4.0-beta.4",
+    "angular-extend-promises": "1.0.0-rc.2",
+    "angular-local-storage": "0.2.2",
+    "angular-ui-router": "0.2.13",
+  	"blueimp-md5": "*",
+    "lodash": "3.3.1",
+    "moment-timezone": "0.2.5",
+    "ng-file-upload": "6.0.4",
+    "underscore.string": "2.3.3"
+  },
+  "devDependencies": {
+  }
+}

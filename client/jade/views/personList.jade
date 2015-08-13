@@ -1,0 +1,37 @@
+loading(ng-if='!people')
+.page(ng-if='people')
+  .sidebar
+    h1
+      span Details
+    .detail
+      label No. People
+      span {{people.length}}
+    .detail
+      label Max Children
+      span {{getMaxChildren()}}
+    h1
+      span Names
+    .list.scroll
+      .detail(ng-repeat="n in names | orderBy:'count':true")
+        label {{n.name || 'Unknown'}}
+        span {{n.count}}
+
+  .header
+    table.people
+      thead
+        tr
+          th.icon 
+          th Name
+          th.date Birth
+          th.location Location
+
+  .content
+    .section
+      table.people
+        tbody
+          tr(ng-repeat="p in people | orderBy:['last', 'first', 'born']:false", ng-class-even="'even'")
+            td.icon
+              i(ng-class='getGenderClass(p.gender)')
+            td.is-link(ng-click='gotoPerson(p)') {{p.last || 'Unknown'}}, {{p.first || 'Unknown'}} {{p.middle}}
+            td.date {{(p.birth && p.birth.date) ? getDate(p.birth.date) : ''}}
+            td.location {{(p.birth && p.birth.location) ? p.location.name : ''}}

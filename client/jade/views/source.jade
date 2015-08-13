@@ -1,0 +1,68 @@
+loading(ng-if='!source')
+.fullscreen-image(ng-if='fullscreen', ng-click='close()')
+  .overlay
+  b64-image(src='getImageUrl(fullscreen.file)')
+
+.page(ng-if='source')
+  .sidebar
+
+  .header
+    h1
+      span {{source.title}}
+
+  .content
+    .section(ng-if='source.people && source.people.length > 0')
+      h1
+        span People
+      table.people
+        thead
+          tr
+            th.icon 
+            th Name
+            th.date Birth
+            th.location Location
+            th Page
+        tbody
+          tr(ng-repeat="item in source.people | orderBy:personOrderBy:false", ng-class-even="'even'")
+            td.icon
+              i(ng-class='getGenderClass(item.person.gender)')
+            td.is-link(ng-click='gotoPerson(item.person)') {{item.person.last || 'Unknown'}}, {{item.person.first || 'Unknown'}} {{item.person.middle}}
+            td.date {{getDate(item.person.birth.date)}}
+            td.location {{item.person.birth.location}}
+            td
+              span(ng-if='isLink(item.page)')
+                a.is-link(href='{{item.page}}', target='_blank') Link
+              span(ng-if='!isLink(item.page)') {{item.page}}
+
+    .section(ng-if='source.events && source.events.length > 0')
+      h1
+        span Events
+      table.events
+        thead
+          tr
+            th.icon
+            th Type
+            th.date Date
+            th Name  
+            th.location Location
+            th Page
+        tbody
+          tr(ng-repeat="item in source.events | orderBy:eventOrderBy", ng-class-even="'even'")
+            td.icon
+              i(ng-class='getTypeClass(item.event.type)')
+            td {{getTypeName(item.event.type)}}
+            td.date {{getDate(item.event.date)}}
+            td.is-link(ng-click='gotoPerson(item.person)') {{item.person ? item.person.name : ''}}  
+            td.location {{item.event.location.name}}
+            td
+              span(ng-if='isLink(item.page)')
+                a.is-link(href='{{item.page}}', target='_blank') Link
+              span(ng-if='!isLink(item.page)') {{item.page}}
+
+    .section(ng-if='source.objects && source.objects.length > 0')
+      h1
+        span Media
+      .media(ng-repeat-start="item in source.objects | orderBy:'title':false")
+        b64-image(src='getThumbUrl(item.file)', ng-click='displayImage(item)')
+        .title{{item.title}}
+      div.clear(ng-repeat-end, ng-if='($index + 1) % 3 === 0')

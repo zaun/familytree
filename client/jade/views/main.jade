@@ -1,0 +1,15 @@
+.site-header
+  .content
+    .logo
+    span.tree-name Zaun Family
+    .link(ui-sref='main.personList') People
+    i.fa.fa-ellipsis-v
+    .link(ui-sref='main.familyList') Families
+    i.fa.fa-ellipsis-v
+    .link(ui-sref='main.sourceList') Sources
+    .link.right(ui-sref='logout')
+      i.fa.fa-sign-out
+    .link.right(ng-if='isAdmin', ui-sref='main.admin')
+      i.fa.fa-cogs
+.view.has-header
+  ui-view

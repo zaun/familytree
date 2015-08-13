@@ -1,0 +1,49 @@
+.page.admin
+  .sidebar
+    h1
+      span Site Info
+
+  .content
+    .section
+      h1
+        span Gedcom Update
+      input(type="file", file-model="gedcomFile")
+      button(ng-click='uploadFile()') Upload
+      i.fa.fa-spinner.fa-spin(ng-if='uploading || processing')
+      span Upload {{progressPercentage}} %
+
+    .section(ng-if='users && users.length > 0')
+      h1
+        span Users
+      table.users
+        thead
+          tr
+            th Name
+            th Username
+            th Admin
+            th Created
+            th
+        tbody
+          tr(ng-repeat="u in users | orderBy:'username':false", ng-class-even="'even'")
+            td.name {{u.name}}
+            td.name {{u.username}}
+            td {{u.admin}}
+            td.date {{getDate(u.createdAt)}}
+            td
+              button(ng-if='!u.admin', ng-click='removeUser(u)', title='Remove User')
+                i.fa.fa-user-times
+        tfooter
+          tr
+            td
+              input(ng-model='newUser.name', placeholder='Name')
+            td
+              input(ng-model='newUser.username', placeholder='Username')
+            td
+              input(ng-model='newUser.admin', type='checkbox')
+            td
+              input(ng-model='newUser.passwordA', placeholder='Password')
+              input(ng-model='newUser.passwordB', placeholder='Retype Password')
+            td
+              button(ng-click='addUser()', title='Add User')
+                i.fa.fa-user-plus
+

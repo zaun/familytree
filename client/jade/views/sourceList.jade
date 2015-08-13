@@ -1,0 +1,27 @@
+loading(ng-if='!sources')
+.page(ng-if='sources')
+  .sidebar
+    h1
+      span Details
+    .detail
+      label No. Sources
+      span {{sources.length}}
+
+  .header
+    table.sources
+      thead
+        tr
+          th Name
+          th.count People
+          th.count Events
+          th.count Media
+
+  .content
+    .section
+      table.sources
+        tbody
+          tr(ng-repeat="s in sources | orderBy:'title':false", ng-class-even="'even'")
+            td.is-link(ng-click='gotoSource(s)') {{s.title}}
+            td.count {{s.peopleCount}}
+            td.count {{s.eventCount}}
+            td.count {{s.objectCount}}

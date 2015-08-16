@@ -1,0 +1,324 @@
+* 
+  padding 0
+  margin 0
+  box-sizing border-box
+  font-family "Helvetica Neue", Helvetica, sans-serif;
+
+html, body
+  position relative
+  height 100%
+  overflow hidden
+
+body
+  padding-left 0
+  padding-right 0
+  background-image url('/img/paper_fibers.png')
+  font-size 13px
+
+  
+.site-header
+  width 100%
+  height 40px
+  background-image url('/img/green_cup.png')
+  .content
+    margin auto
+    width 1025px
+    .logo
+      float left
+      height 40px
+      width 40px
+      margin-right 20px
+      background-size cover
+      background-image url('/img/tree.png')
+      
+    .tree-name
+      float left
+      font-size 25px
+      line-height 40px
+      margin-right 40px
+      
+    .link
+      float left
+      font-size 25px
+      line-height 40px
+      margin-left 10px
+      margin-right 10px
+      cursor pointer
+      &.right
+        float right
+    i
+      float left
+      line-height 40px
+    
+.view
+  position absolute
+  margin auto
+  pointer default
+  width 1025px
+  top 0px
+  bottom 0px
+  left 0px
+  right 0px
+  &.has-header
+    top 40px
+    
+  .page
+    width 100%
+    height 100%
+  
+    .sidebar
+      position absolute
+      top 0px
+      bottom 0px
+      width 220px
+      left 0px
+      padding-top 10px
+      padding-left 10px
+      padding-right 10px
+      background-image url('/img/bedge_grunge.png')
+    
+      .scroll
+        overflow-y auto
+      
+      .list
+        max-height 300px
+        
+      .picture
+        margin-right auto
+        margin-left auto
+        width 200px
+        height 300px
+        &.male
+          background-image url('/img/male.jpg')  
+        &.female
+          background-image url('/img/female.jpg')  
+      
+      h1
+        position relative
+        text-align center
+        font-size 14px
+        font-weight bold
+        padding-top 10px
+        &:after
+          content ""
+          display block
+          border-top solid 1px black
+          width 100%
+          height 2px
+          position absolute
+          top 50%
+          z-index 1
+          background none
+          border-bottom 1px solid #000000
+          border-top 1px solid #000000
+          margin-top 3px
+        span
+          background-image url("/img/bedge_grunge.png");
+          display inline-block
+          padding 0 15px
+          position relative
+          z-index 2
+
+      .spacer
+        height 5px
+        width 100%
+        
+      .detail
+        label
+          display inline-block
+          width 55%
+          font-weight 300
+          text-align right
+          padding-right 2px
+          &:after
+            content ":"
+        label.large
+          width 100%
+          text-align left
+          &:after
+            content ""
+        detail
+          padding-left 5px
+
+      .sources
+        .detail
+          border-bottom 1px dotted #000000
+          label
+            width 100%
+            text-align center
+            &:after
+              content ""
+        .detail:last-child
+          border-bottom 0px dotted #000000
+        
+    .header
+      position absolute
+      top 0px
+      height 40px
+      left 230px
+      right 0px
+      
+      h1
+        position relative
+        text-align center
+        font-size 24px
+        font-weight bold
+        padding-top 10px
+        &:after
+          content ""
+          display block
+          width 100%
+          height 2px
+          position absolute
+          top 50%
+          z-index 1
+          background none
+          border-bottom 1px solid #000000
+          border-top 1px solid #000000
+          margin-top 3px
+          
+        span
+          background-image url("/img/paper_fibers.png");
+          display inline-block
+          padding 0 15px
+          position relative
+          z-index 2
+          
+      table
+        width 100%
+        border-collapse collapse
+        margin-top 15px
+        tr
+          margin 3px
+          border-bottom 1px solid #d3d3d3
+          &.even
+            background-color #e8e8e8
+      
+        td, th
+          padding 3px
+          &.count
+            text-align center
+            width 60px
+          &.name
+            text-align left
+            width 270px
+          &.icon
+            text-align center
+            width 25px
+          &.date
+            text-align left
+            width 175px
+          &.location
+            text-align left
+            width 325px
+          &.sources
+            text-align left
+            width 60px
+              
+    .content
+      position absolute
+      top 40px
+      bottom 0px
+      left 230px
+      right 0px
+      overflow-y auto
+      
+      .section
+        margin-bottom 20px
+        h1
+          position relative
+          text-align center
+          font-size 14px
+          font-weight bold
+          padding-top 10px
+          &:after
+            content ""
+            display block
+            width 100%
+            height 4px
+            position absolute
+            top 50%
+            z-index 1
+            background none
+            border-bottom 1px dotted #000000
+          span
+            background-image url("/img/paper_fibers.png");
+            display inline-block
+            padding 0 15px
+            position relative
+            z-index 2
+            
+        table
+          width 100%
+          border-collapse collapse
+          tr
+            margin 3px
+            border-bottom 1px solid #d3d3d3
+            &.even
+              background-color #e8e8e8
+              
+          tbody
+            tr
+              &:hover
+                  background-color #e8e8f8 !important
+        
+          td, th
+            padding 3px
+            &.name
+              width 270px
+            &.icon
+              text-align center
+              width 25px
+            &.date
+              text-align left
+              width 175px
+            &.location
+              text-align left
+              width 325px
+            &.count
+              text-align center
+              width 60px
+            &.sources
+              text-align left
+              width 60px
+              .source
+                padding-right 5px;
+                padding-left 5px;
+
+      .graphs
+        width 100%
+        margin-left auto
+        margin-right auto
+        
+        .pedigree
+          height: 400px;
+          
+        .person
+          position relative
+          width 200px
+          height 75px
+          border 1px solid black
+          
+          .spouse
+            position relative
+            float left
+          
+          .mother
+            position relative
+            float left
+          
+          .father
+            position relative
+            float left
+
+.is-link
+  cursor pointer
+  text-decoration underline
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus
+  outline none
+
+

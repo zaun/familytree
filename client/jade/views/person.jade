@@ -1,0 +1,120 @@
+loading(ng-if='!person')
+.page(ng-if='person')
+  .sidebar
+    .picture(ng-class='getPictureClass()')
+    h1
+      span Details
+    .detail
+      label Age
+      span {{getAge()}}
+    .detail(ng-if='getBirthYear()')
+      label Birth Year
+      span {{getBirthYear()}}
+    .detail(ng-if='getDeathYear()')
+      label Death Year
+      span {{getDeathYear()}}
+    .spacer
+    .detail(ng-if='person.children.length > 0')
+      label No. Children
+      span {{person.children.length}}
+    .detail(ng-if='getBirthYear() && person.children.length > 1 && getFirstChildAge()')
+      label Age at first Child
+      span {{getFirstChildAge()}}
+    .detail(ng-if='getBirthYear() && person.children.length > 1 && getLastChildAge()')
+      label Age at last Child
+      span {{getLastChildAge()}}
+    .sources(ng-if='person.sources.length > 0')
+      h1
+        span Sources
+      .detail(ng-repeat='s in person.sources')
+        label(ng-if='isLink(s.page)')
+          a(href='{{s.page}}', title='{{s.page}}', target='_blank') {{s.title}}
+        label(ng-if='!isLink(s.page)') {{s.title}}
+
+  .header
+    h1
+      span {{person.name}}
+
+  .content
+    .graphs
+      pedigree(data='person', depth='3', link='true')
+
+    .section(ng-if='person.events && person.events.length > 0')
+      h1
+        span Events
+      table.events
+        thead
+          tr
+            th.icon
+            th Type
+            th Date
+            th Description  
+            th Location
+            th Age
+            th Sources
+        tbody
+          tr(ng-repeat="e in person.events | orderBy:'date':false", ng-class-even="'even'")
+            td.icon
+              i(ng-class='getTypeClass(e.type)')
+            td {{getTypeName(e.type)}}
+            td.date {{getDate(e.date)}}
+            td {{e.description}}  
+            td.location {{e.location.name}}
+            td {{getEventAge(e)}}
+            td.sources
+              span.source(ng-repeat='i in e.sources', title='{{i.title}}') {{($index + 1)}}
+
+    .section(ng-if='person.parents && person.parents.length > 0')
+      h1
+        span Parents
+      table.parents
+        thead
+          tr
+            th 
+            th Name
+            th Birth
+            th Location
+        tbody
+          tr(ng-repeat="p in person.parents | orderBy:'born':false", ng-class-even="'even'")
+            td.icon
+              i(ng-class='getGenderClass(p.gender)')
+            td.name.is-link(ng-click='gotoPerson(p)') {{p.name}}
+            td.date {{(p.birth && p.birth.date) ? getDate(p.birth.date) : ''}}
+            td.location {{(p.birth && p.birth.location) ? p.location.name : ''}}
+
+    .section(ng-if='person.siblings && person.siblings.length > 0')
+      h1
+        span Siblings
+      table.siblings
+        thead
+          tr
+            th 
+            th Name
+            th Birth
+            th Location
+        tbody
+          tr(ng-repeat="s in person.siblings | orderBy:'born':false", ng-class-even="'even'")
+            td.icon
+              i(ng-class='getGenderClass(s.gender)')
+            td.name.is-link(ng-click='gotoPerson(s)') {{s.name}}
+            td.date {{(s.birth && s.birth.date) ? getDate(s.birth.date) : ''}}
+            td.location {{(s.birth && s.birth.location) ? s.location.name : ''}}
+
+    .section(ng-if='person.children && person.children.length > 0')
+      h1
+        span Children
+      table.children
+        thead
+          tr
+            th 
+            th Name
+            th Birth
+            th Location
+        tbody
+          tr(ng-repeat="c in person.children | orderBy:'born':false", ng-class-even="'even'")
+            td.icon 
+              i(ng-class='getGenderClass(c.gender)')
+            td.name.is-link(ng-click='gotoPerson(c)') {{c.name}}
+            td.date {{(c.birth && c.birth.date) ? getDate(c.birth.date) : ''}}
+            td.location {{(c.birth && c.birth.location) ? c.location.name : ''}}
+

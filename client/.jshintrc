@@ -1,0 +1,43 @@
+{
+  "noarg": true,
+  "bitwise": true,
+  "browser": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "eqnull": true,
+  "esnext": true,
+  "immed": true,
+  "indent": 2,
+  "globalstrict": true,
+  "latedef": true,
+  "newcap": true,
+  "node": false,
+  "trailing": true,
+  "undef": true,
+  "unused": true,
+  "white": true,
+  "globals": {
+    "jQuery"     : false,
+
+    "jasmine"    : false,
+    "isCommonJS" : false,
+    "exports"    : false,
+    "spyOn"      : false,
+    "it"         : false,
+    "xit"        : false,
+    "expect"     : false,
+    "runs"       : false,
+    "waits"      : false,
+    "waitsFor"   : false,
+    "beforeEach" : false,
+    "afterEach"  : false,
+    "describe"   : false,
+    "xdescribe"  : false,
+
+    "_"          : false,
+    "$"          : false,
+    "angular"    : false,
+    "app"        : true
+  }
+}

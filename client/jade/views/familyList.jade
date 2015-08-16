@@ -1,0 +1,42 @@
+loading(ng-if='!families')
+.page(ng-if='families')
+  .sidebar
+    h1
+      span Details
+    .detail
+      label No. Families
+      span {{families.length}}
+    .detail
+      label Max Children
+      span {{getMaxChildren()}}
+
+  .header
+    table.families
+      thead
+        tr
+          th.icon
+          th.icon
+          th.name Name
+          th.icon
+          th.name Name
+          th
+          th.count Children
+
+  .content
+    .section
+      table.families
+        tbody
+          tr(ng-repeat="f in families | orderBy:familySort:false", ng-class-even="'even'")
+            td.icon
+              span(ng-if='f.isMarried && !f.isDivorced') M
+              span(ng-if='f.isDivorced') D
+            td.icon
+              i(ng-class='getGenderClass(f.partners[0].gender)')
+            td.name.is-link(ng-click='gotoPerson(f.partners[0])')
+              |{{f.partners[0].last || 'Unknown'}}, {{f.partners[0].first || 'Unknown'}} {{f.partners[0].middle}}
+            td.icon
+              i(ng-class='getGenderClass(f.partners[1].gender)')
+            td.name.is-link(ng-click='gotoPerson(f.partners[1])')
+              |{{f.partners[1].last || 'Unknown'}}, {{f.partners[1].first || 'Unknown'}} {{f.partners[1].middle}}
+            td
+            td.count {{f.children.length}}

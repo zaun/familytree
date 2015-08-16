@@ -1,0 +1,24 @@
+doctype html
+html(ng-app='app')
+  head
+    title WebTree
+    meta(name='viewport', content='initial-scale=1.0,width=device-width')
+    meta(name='google', value='notranslate')
+    link(rel='stylesheet', type='text/css', href='css/site.css')
+    link(rel='stylesheet', type='text/css', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+
+body.ng-cloak(ng-controller='appCtrl')
+  ui-view
+
+  //- Scripts begin
+  script(src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js')
+  script(src='//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js')
+  script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.4/angular.min.js')
+  script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.4/angular-cookies.min.js')
+  script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.4/angular-sanitize.min.js')
+  script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.4/angular-resource.min.js')
+
+  script.
+    var app = angular.module('app', ['ui.router', 'ngResource', 'ngCookies', 'ngSanitize', 'ngFileUpload', 'angular-extend-promises', 'LocalStorageModule']);
+  script(src='js/WebTree.min.js')

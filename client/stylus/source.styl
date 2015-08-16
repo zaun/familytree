@@ -1,0 +1,49 @@
+.clear
+  clear both
+  
+.media
+  width 250px
+  float left
+  padding 10px
+  
+  img
+    display block
+    width 200px
+    margin-left auto
+    margin-right auto
+    cursor pointer
+  
+  .title
+    text-align center
+    font-style italic
+    
+.fullscreen-image
+  position fixed
+  top 0
+  left 0
+  bottom 0
+  right 0
+  z-index: 100
+  overflow-y auto
+  cursor pointer
+
+  .overlay
+    position fixed
+    background-color black  
+    opacity 0.8
+    top 0
+    left 0
+    bottom 0
+    right 0
+    z-index: 101
+
+  img
+    position relative
+    max-width 90%
+    display block
+    margin-top 5%
+    margin-bottom 5%
+    margin-left auto
+    margin-right auto
+    z-index: 102
+    

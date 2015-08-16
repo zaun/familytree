@@ -4,6 +4,6 @@ OLD_HOME=$HOME
 cd $OPENSHIFT_REPO_DIR
 export HOME=$OPENSHIFT_REPO_DIR
 
-grunt build
+grunt
 
 export HOME=$OLD_HOME

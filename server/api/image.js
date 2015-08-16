@@ -5,11 +5,13 @@ var base64 = require('base64-stream'),
       auth = require('../api/auth'),
  thumbnail = require('easyimage');
 
+var DATA_DIR;
+
 var sendThumb = function (req, res) {
   var treeId = req.get('host').replace(':', '-');
 
-  var fileThumb = __dirname + '/../../tree-files/' + treeId + '/thumbs/' + req.params.name;
-  var fileOrig = __dirname + '/../../tree-files/' + treeId + '/media/' + req.params.name;
+  var fileThumb = DATA_DIR + treeId + '/thumbs/' + req.params.name;
+  var fileOrig = DATA_DIR + treeId + '/media/' + req.params.name;
   fs.exists(fileThumb, function (thumbExists) {
     if (thumbExists) {
       var readStream = fs.createReadStream(fileThumb);
@@ -39,8 +41,8 @@ var sendThumb = function (req, res) {
 var sendImage = function (req, res) {
   var treeId = req.get('host').replace(':', '-');
 
-  var fileImage = __dirname + '/../../tree-files/' + treeId + '/normal/' + req.params.name;
-  var fileOrig = __dirname + '/../../tree-files/' + treeId + '/media/' + req.params.name;
+  var fileImage = DATA_DIR + treeId + '/normal/' + req.params.name;
+  var fileOrig = DATA_DIR + treeId + '/media/' + req.params.name;
   fs.exists(fileImage, function (normalExists) {
     if (normalExists) {
       var readStream = fs.createReadStream(fileImage);
@@ -69,6 +71,7 @@ var sendImage = function (req, res) {
 
 
 exports.initialize = function (app) {
+  DATA_DIR = app.treeDir;
   app.get('/api/thumb/:name', auth.secureRoute, sendThumb);
   app.get('/api/image/:name', auth.secureRoute, sendImage);
 };

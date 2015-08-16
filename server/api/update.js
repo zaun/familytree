@@ -12,6 +12,7 @@ var  async = require('async'),
     Source = require('../models/source');
 
 var DEBUG_ID = '@@';
+var DATA_DIR;
 
 /*
  * Given a gedcom person object retun a normalized person object
@@ -564,26 +565,26 @@ var upload = function (req, res) {
 
   async.waterfall([
     function (nextStep) {
-      mkdirp('./tree-files/' + treeId + '/media', function (err) {
+      mkdirp(DATA_DIR + treeId + '/media', function (err) {
         nextStep(err);
       });
     },
 
     function (nextStep) {
-      mkdirp('./tree-files/' + treeId + '/thumbs', function (err) {
+      mkdirp(DATA_DIR + treeId + '/thumbs', function (err) {
         nextStep(err);
       });
     },
 
     function (nextStep) {
-      mkdirp('./tree-files/' + treeId + '/normal', function (err) {
+      mkdirp(DATA_DIR + treeId + '/normal', function (err) {
         nextStep(err);
       });
     },
 
     function (nextStep) {
       if (file && file.extension && file.extension.toLowerCase() === 'ged') {
-        mv(file.path, './tree-files/' + treeId + '/gedcom.ged', function (err) {
+        mv(file.path, DATA_DIR + treeId + '/gedcom.ged', function (err) {
           nextStep(err);
         });
       }
@@ -597,13 +598,13 @@ var upload = function (req, res) {
             }
             else if (entry.type === 'File' && _.endsWith(entry.path.toLowerCase(), '.ged')) {
               // console.log('Found gedcom: ' + entry.path);
-              entry.pipe(fs.createWriteStream('./tree-files/' + treeId + '/gedcom.ged'));
+              entry.pipe(fs.createWriteStream(DATA_DIR + treeId + '/gedcom.ged'));
             }
             else if (entry.type === 'File' && _.endsWith(entry.path.toLowerCase(), '.jpg')) {
               // console.log('Found media: ' + entry.path);
               var parts = entry.path.split('/');
               var filename = parts[parts.length - 1];
-              entry.pipe(fs.createWriteStream('./tree-files/' + treeId + '/media/' + filename));
+              entry.pipe(fs.createWriteStream(DATA_DIR + treeId + '/media/' + filename));
             } else {
               console.log('Unknown entry: ', entry.path);
               entry.autodrain();
@@ -616,7 +617,7 @@ var upload = function (req, res) {
     },
 
     function (nextStep) {
-      processGedcom(treeId, './tree-files/' + treeId + '/gedcom.ged', nextStep);
+      processGedcom(treeId, DATA_DIR + treeId + '/gedcom.ged', nextStep);
     }
   ], function (err) {
     fs.unlink(file.path, function () {
@@ -630,7 +631,7 @@ var upload = function (req, res) {
   });
 };
 
-
 exports.initialize = function (app) {
+  DATA_DIR = app.treeDir;
   app.post('/upload/', upload);
 };

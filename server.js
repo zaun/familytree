@@ -22,6 +22,8 @@ var maxUpload = '500mb';
 // Setup applicaiton
 var app = express();
 app.env = process.env.NODE_ENV || 'development';
+app.tempDir = (process.env.OPENSHIFT_DATA_DIR || __dirname) + '/temp';
+app.treeDir = (process.env.OPENSHIFT_DATA_DIR || __dirname) + '/tree-files/';
 
 // Remove console logging if we aren't on a development server
 if (app.env === 'production') {
@@ -108,20 +110,19 @@ app.use(function (req, res, next) {
 // });
 
 // Remove old temp files
-rimraf.sync('./temp');
+rimraf.sync(app.tempDir);
 
 // Setup middlewares
 app.use(require('body-parser').urlencoded({ extended: true, limit: maxUpload }));
 app.use(require('body-parser').json({limit: maxUpload}));
 app.use(multer({
-  dest: './temp/',
+  dest: app.tempDir + '/temp/',
   rename: function (fieldname, filename) {
     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
   }
 }));
 
 app.use(express.static(path.join(__dirname, 'build/static')));
-app.use(express.static(path.join(__dirname, 'uploads/trees')));
 
 // Hookup the api handlers
 var handlers = requireDir('./server/api', {recurse: true});

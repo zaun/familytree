@@ -13,7 +13,9 @@ var        express = require('express'),
 _.str = require('underscore.string');
 _.mixin(_.str.exports());
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000;
+var ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+
 // var domain = 'server.com';
 var maxUpload = '500mb';
 
@@ -33,7 +35,7 @@ if (app.env === 'production') {
   });
 }
 
-mongoose.connect('mongodb://FamilyTree:FamilyTree@apollo.modulusmongo.net:27017/eHy7mibe');
+mongoose.connect(process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
@@ -132,6 +134,6 @@ _.each(_.keys(handlers), function (handler) {
 // Run the server
 var server = http.createServer(app);
 
-server.listen(port, function () {
-  winston.info('Server startup on port ' + port);
+server.listen(port, ip, function () {
+  winston.info('Server running on ' + ip + ':' + port);
 });

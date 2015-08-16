@@ -20,7 +20,7 @@ coverage
 .lock-wscript
 
 # The end results
-build
+build/
 
 # server created dirs
 uploads

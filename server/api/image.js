@@ -85,7 +85,7 @@ var processResizes = function () {
       setTimeout(processResizes, 500);
     });
   } else {
-    setTimeout(processResizes, 500);
+    setTimeout(processResizes, 1000);
   }
 };
 

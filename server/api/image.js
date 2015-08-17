@@ -29,7 +29,7 @@ var sendThumb = function (req, res) {
         if (!_.contains(requestSize, opts)) {
           fs.exists(fileOrig, function (origExists) {
             if (origExists) {
-              requestSize.push();
+              requestSize.push(opts);
               setTimeout(sendThumbInternal, 1000);
             } else {
               res.status(404).end();

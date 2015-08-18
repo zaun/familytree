@@ -29,6 +29,7 @@ var sendThumb = function (req, res) {
         if (!_.contains(requestSize, opts)) {
           fs.exists(fileOrig, function (origExists) {
             if (origExists) {
+              console.log('Requesting image resize', opts);
               requestSize.push(opts);
               setTimeout(sendThumbInternal, 1000);
             } else {
@@ -78,10 +79,12 @@ var sendImage = function (req, res) {
 var processResizes = function () {
   if (requestSize.length > 0) {
     var options = requestSize.shift();
+    console.log('Processing image resize', options);
     thumbnail.resize(options).then(function () {
+      console.log('  Finished');
       setTimeout(processResizes, 500);
     }, function (err) {
-      console.log(err);
+      console.log('  ' + err);
       setTimeout(processResizes, 500);
     });
   } else {

@@ -39,7 +39,7 @@ if (app.env === 'production') {
 }
 
 // Add file logging
-winston.add(winston.transports.File, { filename: app.logDir + '/app.log', level: 'file' });
+winston.add(winston.transports.File, { filename: app.logDir + '/app.log' });
 
 mongoose.connect(process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL);
 var db = mongoose.connection;
@@ -120,7 +120,7 @@ rimraf.sync(app.tempDir);
 app.use(require('body-parser').urlencoded({ extended: true, limit: maxUpload }));
 app.use(require('body-parser').json({limit: maxUpload}));
 app.use(multer({
-  dest: app.tempDir + '/temp/',
+  dest: app.tempDir,
   rename: function (fieldname, filename) {
     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
   }

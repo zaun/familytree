@@ -31,8 +31,7 @@ var sendThumb = function (req, res) {
         if (!_.contains(requestSize, opts)) {
           fs.exists(fileOrig, function (origExists) {
             if (origExists) {
-              console.log('Requesting image resize', opts);
-              winston.log('file', 'Requesting image resize 200 ' + opts.src);
+              winston.info('Requesting image resize 200 ' + opts.src);
               requestSize.push(opts);
               setTimeout(sendThumbInternal, 1000);
             } else {
@@ -100,10 +99,10 @@ var processResizes = function () {
     });
 
     thumbnail.resize(options).then(function () {
-      winston.log('file', 'Finished thumbnail ' + options.src);
+      winston.info('Finished thumbnail ' + options.src);
       setTimeout(processResizes, 500);
     }, function (err) {
-      winston.log('file', 'Thumbnail error ' + err + ' - ' + options.src);
+      winston.info('Thumbnail error ' + err + ' - ' + options.src);
       setTimeout(processResizes, 500);
     });
   } else {

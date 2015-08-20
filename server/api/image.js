@@ -4,6 +4,7 @@ var base64 = require('base64-stream'),
         fs = require('fs'),
       auth = require('../api/auth'),
  thumbnail = require('easyimage'),
+     thumb = require('lwip'),
          _ = require('lodash');
 
 var DATA_DIR;
@@ -80,6 +81,22 @@ var processResizes = function () {
   if (requestSize.length > 0) {
     var options = requestSize.shift();
     console.log('Processing image resize', options);
+
+    thumb.open(options.src, function (openError, image) {
+      if (openError) {
+        console.log(openError);
+        return;
+      }
+
+      image.batch()
+            .resize(options.width, null, 'lanczos')
+            .writeFile(options.dst, function (saveError) {
+              if (saveError) {
+                console.log(saveError);
+              }
+            });
+    });
+
     thumbnail.resize(options).then(function () {
       console.log('  Finished');
       setTimeout(processResizes, 500);

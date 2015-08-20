@@ -5,6 +5,7 @@ var base64 = require('base64-stream'),
       auth = require('../api/auth'),
  thumbnail = require('easyimage'),
      thumb = require('lwip'),
+   winston = require('winston'),
          _ = require('lodash');
 
 var DATA_DIR;
@@ -31,6 +32,7 @@ var sendThumb = function (req, res) {
           fs.exists(fileOrig, function (origExists) {
             if (origExists) {
               console.log('Requesting image resize', opts);
+              winston.log('file', 'Requesting image resize 200 ' + opts.src);
               requestSize.push(opts);
               setTimeout(sendThumbInternal, 1000);
             } else {
@@ -98,10 +100,10 @@ var processResizes = function () {
     });
 
     thumbnail.resize(options).then(function () {
-      console.log('  Finished');
+      winston.log('file', 'Finished thumbnail ' + options.src);
       setTimeout(processResizes, 500);
     }, function (err) {
-      console.log('  ' + err);
+      winston.log('file', 'Thumbnail error ' + err + ' - ' + options.src);
       setTimeout(processResizes, 500);
     });
   } else {

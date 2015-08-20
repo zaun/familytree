@@ -23,6 +23,7 @@ var maxUpload = '500mb';
 var app = express();
 app.env = process.env.NODE_ENV || 'development';
 app.tempDir = (process.env.OPENSHIFT_DATA_DIR || __dirname) + '/temp';
+app.logDir = (process.env.OPENSHIFT_DATA_DIR || __dirname) + '/temp';
 app.treeDir = (process.env.OPENSHIFT_DATA_DIR || __dirname) + '/tree-files/';
 
 // Remove console logging if we aren't on a development server
@@ -36,6 +37,9 @@ if (app.env === 'production') {
     prettyPrint: true
   });
 }
+
+// Add file logging
+winston.add(winston.transports.File, { filename: app.logDir + '/app.log', level: 'file' });
 
 mongoose.connect(process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL);
 var db = mongoose.connection;

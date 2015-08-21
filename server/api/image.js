@@ -14,8 +14,8 @@ var requestSize = [];
 var sendThumb = function (req, res) {
   var treeId = req.get('host').replace(':', '-');
 
-  var fileThumb = DATA_DIR + treeId + '/thumbs/' + req.params.name;
-  var fileOrig = DATA_DIR + treeId + '/media/' + req.params.name;
+  var fileThumb = DATA_DIR + '/' + treeId + '/thumbs/' + req.params.name;
+  var fileOrig = DATA_DIR + '/' + treeId + '/media/' + req.params.name;
 
   var sendThumbInternal = function () {
     fs.exists(fileThumb, function (thumbExists) {
@@ -49,8 +49,8 @@ var sendThumb = function (req, res) {
 var sendImage = function (req, res) {
   var treeId = req.get('host').replace(':', '-');
 
-  var fileImage = DATA_DIR + treeId + '/normal/' + req.params.name;
-  var fileOrig = DATA_DIR + treeId + '/media/' + req.params.name;
+  var fileImage = DATA_DIR + '/' + treeId + '/normal/' + req.params.name;
+  var fileOrig = DATA_DIR + '/' + treeId + '/media/' + req.params.name;
   fs.exists(fileImage, function (normalExists) {
     if (normalExists) {
       var readStream = fs.createReadStream(fileImage);

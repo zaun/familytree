@@ -23,7 +23,7 @@ var maxUpload = '500mb';
 var app = express();
 app.env = process.env.NODE_ENV || 'development';
 app.tempDir = (process.env.OPENSHIFT_DATA_DIR || __dirname) + '/temp';
-app.logDir = (process.env.OPENSHIFT_DATA_DIR || __dirname) + '/log';
+app.logDir = (process.env.OPENSHIFT_DATA_DIR || __dirname);
 app.treeDir = (process.env.OPENSHIFT_DATA_DIR || __dirname) + '/tree-files/';
 
 // Remove console logging if we aren't on a development server

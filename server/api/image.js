@@ -81,11 +81,11 @@ var sendImage = function (req, res) {
 var processResizes = function () {
   if (requestSize.length > 0) {
     var options = requestSize.shift();
-    console.log('Processing image resize', options);
+    winston.info('Processing image resize:' + options.src);
 
     thumb.open(options.src, function (openError, image) {
       if (openError) {
-        console.log(openError);
+        winston.info('Thumbnail open error ' + openError);
         return;
       }
 
@@ -93,7 +93,7 @@ var processResizes = function () {
             .resize(options.width, null, 'lanczos')
             .writeFile(options.dst, function (saveError) {
               if (saveError) {
-                console.log(saveError);
+                winston.info('Thumbnail save error ' + saveError);
               }
             });
     });
@@ -101,6 +101,7 @@ var processResizes = function () {
     thumbnail.resize(options).then(function () {
       setTimeout(processResizes, 500);
     }, function (err) {
+      winston.info('Thumbnail error ' + err + ' - ' + options.src);
       setTimeout(processResizes, 500);
     });
   } else {

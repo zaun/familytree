@@ -31,7 +31,6 @@ var sendThumb = function (req, res) {
         if (!_.contains(requestSize, opts)) {
           fs.exists(fileOrig, function (origExists) {
             if (origExists) {
-              winston.info('Requesting image resize 200 ' + opts.src);
               requestSize.push(opts);
               setTimeout(sendThumbInternal, 1000);
             } else {
@@ -39,12 +38,12 @@ var sendThumb = function (req, res) {
             }
           });
         } else {
-          winston.info('Waiting for ' + opts.src);
           setTimeout(sendThumbInternal, 1000);
         }
       }
     });
   };
+  sendThumbInternal();
 };
 
 var sendImage = function (req, res) {
@@ -100,10 +99,8 @@ var processResizes = function () {
     });
 
     thumbnail.resize(options).then(function () {
-      winston.info('Finished thumbnail ' + options.src);
       setTimeout(processResizes, 500);
     }, function (err) {
-      winston.info('Thumbnail error ' + err + ' - ' + options.src);
       setTimeout(processResizes, 500);
     });
   } else {

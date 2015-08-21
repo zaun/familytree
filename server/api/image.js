@@ -39,6 +39,7 @@ var sendThumb = function (req, res) {
             }
           });
         } else {
+          winston.info('Waiting for ' + opts.src);
           setTimeout(sendThumbInternal, 1000);
         }
       }

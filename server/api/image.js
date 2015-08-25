@@ -88,11 +88,12 @@ var processResizes = function () {
 
     thumb.open(currentOptions.src, function (openError, image) {
       if (openError) {
-        winston.info('Thumbnail open error ' + openError);
+        winston.error('Thumbnail open error ' + openError);
         requestSize.shift();
         currentOptions = null;
         return;
       }
+      winston.info('Thumbnail opened ' + currentOptions.src);
 
       image.batch()
         .resize(currentOptions.width, null, 'lanczos')
@@ -100,8 +101,10 @@ var processResizes = function () {
           requestSize.shift();
           currentOptions = null;
           if (saveError) {
-            winston.info('Thumbnail save error ' + saveError);
+            winston.error('Thumbnail save error ' + saveError);
+            return;
           }
+          winston.info('Thumbnail saved ' + currentOptions.src);
         });
     });
   } else {

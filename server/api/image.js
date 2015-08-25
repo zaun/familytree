@@ -80,31 +80,29 @@ var sendImage = function (req, res) {
 };
 
 
+var currentOptions;
 var processResizes = function () {
-  if (requestSize.length > 0) {
-    var options = requestSize.shift();
-    winston.info('Processing image resize:' + options.src);
+  if (requestSize.length > 0 && !currentOptions) {
+    currentOptions = requestSize[0];
+    winston.info('Processing image resize:' + currentOptions.src);
 
-    thumb.open(options.src, function (openError, image) {
+    thumb.open(currentOptions.src, function (openError, image) {
       if (openError) {
         winston.info('Thumbnail open error ' + openError);
+        requestSize.shift();
+        currentOptions = null;
         return;
       }
 
       image.batch()
-            .resize(options.width, null, 'lanczos')
-            .writeFile(options.dst, function (saveError) {
-              if (saveError) {
-                winston.info('Thumbnail save error ' + saveError);
-              }
-            });
-    });
-
-    thumbnail.resize(options).then(function () {
-      setTimeout(processResizes, 500);
-    }, function (err) {
-      winston.info('Thumbnail error ' + err + ' - ' + options.src);
-      setTimeout(processResizes, 500);
+        .resize(currentOptions.width, null, 'lanczos')
+        .writeFile(currentOptions.dst, function (saveError) {
+          requestSize.shift();
+          currentOptions = null;
+          if (saveError) {
+            winston.info('Thumbnail save error ' + saveError);
+          }
+        });
     });
   } else {
     setTimeout(processResizes, 500);

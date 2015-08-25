@@ -9,7 +9,8 @@ var  async = require('async'),
          _ = require('lodash'),
     Person = require('../models/person'),
     Family = require('../models/family'),
-    Source = require('../models/source');
+    Source = require('../models/source'),
+   winston = require('winston');
 
 var DEBUG_ID = '@@';
 var DATA_DIR;
@@ -449,7 +450,7 @@ var processGedcom = function (treeId, filename, done) {
     },
 
     function (data, nextStep) {
-      console.log(treeId + ' Mapping people');
+      winston.info(treeId + ' Mapping people');
       data.treeId = treeId;
       async.map(data.individuals, function (person, next) {
         mapPerson(person, data, next);
@@ -461,7 +462,7 @@ var processGedcom = function (treeId, filename, done) {
     },
 
     function (data, nextStep) {
-      console.log(treeId + ' Mapping families');
+      winston.info(treeId + ' Mapping families');
       async.map(data.families, function (family, next) {
         mapFamily(family, data, next);
       },
@@ -472,7 +473,7 @@ var processGedcom = function (treeId, filename, done) {
     },
 
     function (data, nextStep) {
-      console.log(treeId + ' Mapping sources');
+      winston.info(treeId + ' Mapping sources');
       async.map(data.sources, function (source, next) {
         mapSource(source, data, next);
       },
@@ -491,7 +492,7 @@ var processGedcom = function (treeId, filename, done) {
     },
 
     function (data, nextStep) {
-      console.log(treeId + ' Saving people');
+      winston.info(treeId + ' Saving people');
       async.each(data.individuals, function (person, nextPerson) {
         Person.findOne({treeId: treeId, gedId: person.gedId}, function (err, oldPerson) {
           if (oldPerson) {
@@ -508,7 +509,7 @@ var processGedcom = function (treeId, filename, done) {
     },
 
     function (data, nextStep) {
-      console.log(treeId + ' Saving families');
+      winston.info(treeId + ' Saving families');
       async.each(data.families, function (family, nextFamily) {
         Family.findOne({treeId: treeId, gedId: family.gedId}, function (err, oldFamily) {
           if (oldFamily) {
@@ -525,7 +526,7 @@ var processGedcom = function (treeId, filename, done) {
     },
 
     function (data, nextStep) {
-      console.log(treeId + ' Saving sources');
+      winston.info(treeId + ' Saving sources');
       async.each(data.sources, function (source, nextSource) {
         Source.findOne({treeId: treeId, gedId: source.gedId}, function (err, oldSource) {
           if (oldSource) {
@@ -542,7 +543,7 @@ var processGedcom = function (treeId, filename, done) {
     }
   ], function (err) {
     if (err) {
-      console.log(err);
+      winston.error(err);
     }
     done(err);
   });
@@ -589,7 +590,7 @@ var upload = function (req, res) {
         });
       }
       else if (file && file.extension && file.extension.toLowerCase() === 'zip') {
-        console.log(treeId + ' Processing ZIP file');
+        winston.info(treeId + ' Processing ZIP file');
         fs.createReadStream(file.path)
           .pipe(unzip.Parse())
           .on('entry', function (entry) {
@@ -606,7 +607,7 @@ var upload = function (req, res) {
               var filename = parts[parts.length - 1];
               entry.pipe(fs.createWriteStream(DATA_DIR + treeId + '/media/' + filename));
             } else {
-              console.log('Unknown entry: ', entry.path);
+              winston.info('Unknown entry: ', entry.path);
               entry.autodrain();
             }
           })
@@ -622,7 +623,7 @@ var upload = function (req, res) {
   ], function (err) {
     fs.unlink(file.path, function () {
       if (err) {
-        console.log(err);
+        winston.info(err);
         res.status(400).send(err);
       } else {
         res.status(200).send('OK');

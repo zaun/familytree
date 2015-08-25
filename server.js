@@ -45,7 +45,7 @@ mongoose.connect(process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
-  console.log('mongo opened');
+  winston.info('mongo opened');
 });
 
 // CORS

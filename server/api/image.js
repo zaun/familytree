@@ -96,7 +96,7 @@ var processResizes = function () {
       winston.info('Thumbnail opened ' + currentOptions.src);
 
       image.batch()
-        .resize(currentOptions.width, null, 'lanczos')
+        .resize(currentOptions.width, 'lanczos')
         .writeFile(currentOptions.dst, function (saveError) {
           requestSize.shift();
           currentOptions = null;

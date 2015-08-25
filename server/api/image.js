@@ -98,13 +98,13 @@ var processResizes = function () {
       image.batch()
         .resize(currentOptions.width, 'lanczos')
         .writeFile(currentOptions.dst, function (saveError) {
-          requestSize.shift();
-          currentOptions = null;
           if (saveError) {
             winston.error('Thumbnail save error ' + saveError);
-            return;
+          } else {
+            winston.info('Thumbnail saved ' + currentOptions.dst);
           }
-          winston.info('Thumbnail saved ' + currentOptions.src);
+          requestSize.shift();
+          currentOptions = null;
         });
     });
   } else {

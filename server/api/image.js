@@ -29,7 +29,7 @@ var sendThumb = function (req, res) {
           dst: fileThumb,
           width: 200
         };
-        if (!_.contains(requestSize, opts)) {
+        if (!_.find(requestSize, opts)) {
           fs.exists(fileOrig, function (origExists) {
             if (origExists) {
               winston.info('Requesting thumbnail ' + fileOrig);

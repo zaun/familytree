@@ -80,9 +80,9 @@ var sendImage = function (req, res) {
 };
 
 
-var currentOptions;
+var currentOptions = null;
 var processResizes = function () {
-  if (requestSize.length > 0 && !currentOptions) {
+  if (requestSize.length > 0 && currentOptions === null) {
     currentOptions = requestSize[0];
     winston.info('Processing image resize:' + currentOptions.src);
 

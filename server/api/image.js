@@ -18,7 +18,6 @@ var sendThumb = function (req, res) {
   var fileOrig = DATA_DIR + '/' + treeId + '/media/' + req.params.name;
 
   var sendThumbInternal = function () {
-    winston.info('Looking for thumbnail ' + fileThumb);
     fs.exists(fileThumb, function (thumbExists) {
       if (thumbExists) {
         var readStream = fs.createReadStream(fileThumb);
@@ -91,6 +90,7 @@ var processResizes = function () {
         winston.error('Thumbnail open error ' + openError);
         requestSize.shift();
         currentOptions = null;
+        setTimeout(processResizes, 500);
         return;
       }
       winston.info('Thumbnail opened ' + currentOptions.src);

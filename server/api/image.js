@@ -3,7 +3,6 @@
 var base64 = require('base64-stream'),
         fs = require('fs'),
       auth = require('../api/auth'),
- thumbnail = require('easyimage'),
      thumb = require('lwip'),
    winston = require('winston'),
          _ = require('lodash');
@@ -110,6 +109,7 @@ var processResizes = function () {
           }
           requestSize.shift();
           currentOptions = null;
+          image = null;
           setTimeout(processResizes, 50);
         });
     });

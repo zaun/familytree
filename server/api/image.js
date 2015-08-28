@@ -33,13 +33,13 @@ var sendThumb = function (req, res) {
             if (origExists) {
               winston.info('Requesting thumbnail ' + fileOrig);
               requestSize.push(opts);
-              setTimeout(sendThumbInternal, 1000);
+              setTimeout(sendThumbInternal, 250);
             } else {
               res.status(404).end();
             }
           });
         } else {
-          setTimeout(sendThumbInternal, 1000);
+          setTimeout(sendThumbInternal, 250);
         }
       }
     });
@@ -52,30 +52,35 @@ var sendImage = function (req, res) {
 
   var fileImage = DATA_DIR + '/' + treeId + '/normal/' + req.params.name;
   var fileOrig = DATA_DIR + '/' + treeId + '/media/' + req.params.name;
-  fs.exists(fileImage, function (normalExists) {
-    if (normalExists) {
-      var readStream = fs.createReadStream(fileImage);
-      readStream.pipe(base64.encode()).pipe(res);
-    } else {
-      fs.exists(fileOrig, function (origExists) {
-        if (origExists) {
-          thumbnail.resize({
-            src: fileOrig,
-            dst: fileImage,
-            width: 1200
-          }).then(function () {
-            var readStream = fs.createReadStream(fileImage);
-            readStream.pipe(base64.encode()).pipe(res);
-          }, function (err) {
-            console.log(err);
-            res.status(500).send(err.message);
+
+  var sendThumbInternal = function () {
+    fs.exists(fileImage, function (thumbExists) {
+      if (thumbExists) {
+        var readStream = fs.createReadStream(fileImage);
+        readStream.pipe(base64.encode()).pipe(res);
+      } else {
+        var opts = {
+          src: fileOrig,
+          dst: fileImage,
+          width: 1200
+        };
+        if (!_.find(requestSize, opts)) {
+          fs.exists(fileOrig, function (origExists) {
+            if (origExists) {
+              winston.info('Requesting image ' + fileOrig);
+              requestSize.push(opts);
+              setTimeout(sendThumbInternal, 250);
+            } else {
+              res.status(404).end();
+            }
           });
         } else {
-          res.status(404).end();
+          setTimeout(sendThumbInternal, 250);
         }
-      });
-    }
-  });
+      }
+    });
+  };
+  sendThumbInternal();
 };
 
 
@@ -87,29 +92,29 @@ var processResizes = function () {
 
     thumb.open(currentOptions.src, function (openError, image) {
       if (openError) {
-        winston.error('Thumbnail open error ' + openError);
+        winston.error('Image open error ' + openError);
         requestSize.shift();
         currentOptions = null;
-        setTimeout(processResizes, 500);
+        setTimeout(processResizes, 50);
         return;
       }
-      winston.info('Thumbnail opened ' + currentOptions.src);
+      winston.info('Image opened ' + currentOptions.src);
 
       image.batch()
         .resize(currentOptions.width, 'lanczos')
         .writeFile(currentOptions.dst, function (saveError) {
           if (saveError) {
-            winston.error('Thumbnail save error ' + saveError);
+            winston.error('Image save error ' + saveError);
           } else {
-            winston.info('Thumbnail saved ' + currentOptions.dst);
+            winston.info('Image saved ' + currentOptions.dst);
           }
           requestSize.shift();
           currentOptions = null;
-          setTimeout(processResizes, 500);
+          setTimeout(processResizes, 50);
         });
     });
   } else {
-    setTimeout(processResizes, 500);
+    setTimeout(processResizes, 50);
   }
 };
 

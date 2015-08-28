@@ -105,6 +105,7 @@ var processResizes = function () {
           }
           requestSize.shift();
           currentOptions = null;
+          setTimeout(processResizes, 500);
         });
     });
   } else {

@@ -16,6 +16,9 @@
         _.each(data.events, function (e) {
           $scope.masterSourceList = _.union($scope.masterSourceList, e.sources);
         });
+        $scope.masterSourceList = _.uniq($scope.masterSourceList, function (s) {
+          return s.title;
+        });
       }).error(function () {
       });
     };
@@ -30,7 +33,7 @@
     };
 
     $scope.getSourceID = function (source) {
-      return _.findIndex($scope.masterSourceList, source) + 1;
+      return _.findIndex($scope.masterSourceList, {title: source.title}) + 1;
     };
 
     $scope.getPictureClass = function () {

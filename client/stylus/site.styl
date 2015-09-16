@@ -99,6 +99,7 @@ body
         font-size 14px
         font-weight bold
         padding-top 10px
+        pointer default
         &:after
           content ""
           display block
@@ -142,15 +143,22 @@ body
 
       .sources
         .detail
+          margin-bottom 2px
+          padding-bottom 3px
           border-bottom 1px dotted #000000
           label
             width 100%
-            text-align center
+            text-align left
             &:after
               content ""
         .detail:last-child
           border-bottom 0px dotted #000000
-        
+
+      .link
+        display inline
+        cursor pointer
+        text-decoration underline
+
     .header
       position absolute
       top 0px
@@ -284,6 +292,7 @@ body
               .source
                 padding-right 5px;
                 padding-left 5px;
+                cursor pointer
 
       .graphs
         width 100%

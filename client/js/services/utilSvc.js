@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  app.service('util', function (moment) {
+  app.service('util', function ($log, moment) {
     return {
 
       isLink: function (value) {
@@ -70,6 +70,14 @@
       },
 
       getFormattedDate: function (d) {
+        if (!d) {
+          return '';
+        }
+
+        //remove the time
+        var parts = d.split('T');
+        d = parts[0];
+
         var md = moment(d);
         if (d && md.isValid() && parseInt(md.format('YYYY')) > 999) {
           if (d.length === 4) {

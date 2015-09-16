@@ -41,7 +41,7 @@ if (app.env === 'production') {
 // Add file logging
 winston.add(winston.transports.File, { filename: app.logDir + '/app.log' });
 
-mongoose.connect(process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL);
+mongoose.connect(process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL || 'mongodb://localhost');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {

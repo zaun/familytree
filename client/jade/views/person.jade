@@ -23,13 +23,16 @@ loading(ng-if='!person')
     .detail(ng-if='getBirthYear() && person.children.length > 1 && getLastChildAge()')
       label Age at last Child
       span {{getLastChildAge()}}
-    .sources(ng-if='person.sources.length > 0')
+    .sources(ng-if='masterSourceList.length > 0')
       h1
         span Sources
-      .detail(ng-repeat='s in person.sources')
+      .detail(ng-repeat='s in masterSourceList')
         label(ng-if='isLink(s.page)')
-          a(href='{{s.page}}', title='{{s.page}}', target='_blank') {{s.title}}
-        label(ng-if='!isLink(s.page)') {{s.title}}
+          | {{getSourceID(s)}})&nbsp;
+          a.link(href='{{s.page}}', title='{{s.page}}', target='_blank') {{s.title}}
+        label(ng-if='!isLink(s.page)')
+          | {{getSourceID(s)}})&nbsp;
+          .link(ng-click='gotoSource(s)') {{s.title}}
 
   .header
     h1
@@ -62,7 +65,7 @@ loading(ng-if='!person')
             td.location {{e.location.name}}
             td {{getEventAge(e)}}
             td.sources
-              span.source(ng-repeat='i in e.sources', title='{{i.title}}') {{($index + 1)}}
+              span.source(ng-repeat='i in e.sources', title='{{i.title}}', ng-click='gotoSource(i)') {{getSourceID(i)}}
 
     .section(ng-if='person.parents && person.parents.length > 0')
       h1

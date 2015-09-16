@@ -11,6 +11,11 @@
       }).success(function (data) {
         // $log.info(JSON.stringify(data, null, 2));
         $scope.person = data;
+
+        $scope.masterSourceList = _.cloneDeep(data.sources);
+        _.each(data.events, function (e) {
+          $scope.masterSourceList = _.union($scope.masterSourceList, e.sources);
+        });
       }).error(function () {
       });
     };
@@ -18,6 +23,14 @@
 
     $scope.gotoPerson = function (person) {
       $state.go('main.person', {personId: person.gedId});
+    };
+
+    $scope.gotoSource = function (source) {
+      $state.go('main.source', {sourceId: source.gedId});
+    };
+
+    $scope.getSourceID = function (source) {
+      return _.findIndex($scope.masterSourceList, source) + 1;
     };
 
     $scope.getPictureClass = function () {
